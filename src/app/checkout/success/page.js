@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { verifyPayment } from "@/lib/api";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const { clearCart } = useCart();
@@ -56,5 +56,13 @@ export default function CheckoutSuccessPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<p className="mx-auto max-w-md px-6 py-20 text-center text-muted">Loading&hellip;</p>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }
